@@ -3,7 +3,7 @@
   "name": "Hello",
   "createdAt": "2026-10-07T00:10:45.705Z",
   "filename": "1f58f6fd-0b0b-4eda-b617-64358b106361.json",
-  "geminiStarted": false,
+  "geminiStarted": true,
   "messages": [
     {
       "id": "a21fe431-8d8e-4087-80bd-b3daee35089b",
@@ -14,6 +14,30 @@
       "client_type": "gemini-bridge",
       "parent_message_id": null,
       "created_at": "2026-10-07T00:11:41.861Z",
+      "sender": "ios",
+      "is_cancelled": false
+    },
+    {
+      "id": "8fe43144-ce2f-4846-b99e-e648ea1d1035",
+      "role": "agent",
+      "content": "Hello! How can I help you today? \n\nWe have a clean slate for the **YouTube to M4A converter** project. Let me know what you'd like to build or how you'd like to get started!",
+      "status": "completed",
+      "model": "gemini-3.8-flash-high",
+      "client_type": "gemini-bridge",
+      "parent_message_id": "a21fe431-8d8e-4087-80bd-b3daee35089b",
+      "created_at": "2026-10-07T00:11:53.129Z",
+      "sender": "macOS",
+      "is_cancelled": false
+    },
+    {
+      "id": "14aa60d6-b2b2-4a88-9960-6e7aab57d83a",
+      "role": "user",
+      "content": "Just convert https://youtu.be/jl1JfgbigP4?is=TM7JRbCdSHTodngS to a m4a file",
+      "status": "pending",
+      "model": "gemini-3.8-flash-high",
+      "client_type": "gemini-bridge",
+      "parent_message_id": null,
+      "created_at": "2026-10-07T00:12:15.974Z",
       "sender": "ios",
       "is_cancelled": false
     }
