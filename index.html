@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YouTube to M4A Converter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: #0b0f19;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      line-height: 1.5;
+    }
+    .container {
+      width: 100%;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #34d399;
+      box-shadow: 0 0 10px #34d399;
+    }
+    .card {
+      background: #111827;
+      border: 1px solid #1f293d;
+      border-radius: 24px;
+      padding: 32px 28px;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+    .header {
+      margin-bottom: 24px;
+    }
+    .header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .header p {
+      font-size: 14px;
+      color: #94a3b8;
+    }
+    .media-card {
+      background: #162033;
+      border: 1px solid #23304c;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .media-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+    }
+    .track-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .album-art {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 8px 16px -4px rgba(79, 70, 229, 0.4);
+    }
+    .album-art svg {
+      width: 30px;
+      height: 30px;
+      color: #ffffff;
+    }
+    .track-details {
+      overflow: hidden;
+    }
+    .track-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #f8fafc;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px;
+    }
+    .track-subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .track-tag {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+    audio {
+      width: 100%;
+      height: 44px;
+      border-radius: 12px;
+      outline: none;
+      filter: invert(100%) hue-rotate(180deg) brightness(1.2);
+      margin-bottom: 8px;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .meta-item {
+      text-align: center;
+    }
+    .meta-label {
+      font-size: 11px;
+      color: #64748b;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
+    .meta-val {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 24px;
+      border-radius: 14px;
+      box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-download:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 24px -5px rgba(79, 70, 229, 0.5);
+      background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
+    }
+    .btn-source {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+    .btn-source:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #f1f5f9;
+    }
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .footer a {
+      color: #818cf8;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="text-align: center;">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Conversion Complete
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="header">
+        <h1>YouTube to M4A</h1>
+        <p>Your requested YouTube video has been converted and optimized to M4A.</p>
+      </div>
+
+      <div class="media-card">
+        <div class="track-info">
+          <div class="album-art">
+            <svg fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+          </div>
+          <div class="track-details">
+            <div class="track-title" title="Kanye West - I Know I Know (I Thought About Killing You OG)">
+              Kanye West - I Know I Know
+            </div>
+            <div class="track-subtitle">
+              <span>(I Thought About Killing You OG)</span>
+              <span class="track-tag">M4A</span>
+            </div>
+          </div>
+        </div>
+
+        <audio controls preload="metadata">
+          <source src="Kanye%20West%20-%20I%20Know%20I%20Know%20(I%20Thought%20About%20Killing%20You%20OG).m4a" type="audio/mp4">
+          Your browser does not support the audio element.
+        </audio>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <div class="meta-label">Format</div>
+            <div class="meta-val">AAC / M4A</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Duration</div>
+            <div class="meta-val">7:17</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Bitrate</div>
+            <div class="meta-val">129 kbps</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn-download" href="Kanye%20West%20-%20I%20Know%20I%20Know%20(I%20Thought%20About%20Killing%20You%20OG).m4a" download="Kanye West - I Know I Know (I Thought About Killing You OG).m4a">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download M4A Audio (6.75 MB)
+        </a>
+
+        <a class="btn-source" href="https://youtu.be/jl1JfgbigP4" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+          View Original on YouTube
+        </a>
+      </div>
+    </div>
+
+    <div class="footer">
+      Converted via <a href="https://github.com/yt-dlp/yt-dlp" target="_blank">yt-dlp</a> &amp; FFmpeg &bull; Standard ISO/IEC AAC in M4A
+    </div>
+  </div>
+</body>
+</html>
